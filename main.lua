@@ -32,9 +32,10 @@ end
 function love.load()
     love.window.setTitle("Bubbles (c) Enno Rehling 2015")
     console.log("Bubbles (c) Enno Rehling 2015")
-    img = love.graphics.newImage("bubbles.png")
+    img = love.graphics.newImage("bubbless.png")
     tilew, tileh = img:getDimensions()
     tilew = tilew/2
+    tileh = tileh
     sheetw, sheeth = love.window.getDimensions()
     sheetw = 1+ sheetw / tilew
     sheeth = 1+ sheeth / tileh
