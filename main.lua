@@ -2,8 +2,9 @@ local http = require("socket.http")
 console = require('console')
 require('audiomgr')
 
+local networking = true
 local quit = false
-local url = 'http://10.0.0.11/counters/death.php'
+local url = 'http://enno.kn-bremen.de/counters/death.php'
 local img
 local bubble, popped
 local tilew, tileh
@@ -23,10 +24,10 @@ local function bubble_pop(x, y)
         love.audio.play("pop.wav", "stream")
         is_popped[x+y*sheetw] = true
     end
---[[
-    local str = http.request(url)
-    console.log(str)
-]]--
+    if networking then
+        local str = http.request(url)
+        console.log(str)
+    end
 end
 
 function love.load()

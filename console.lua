@@ -15,7 +15,6 @@ function console.draw()
     local num = #console.lines
     local first = num - maxlines
     if first < 1 then first = 1 end
-    print(first, num)
     for k, msg in ipairs(console.lines) do
         -- TODO: inefficient loop
         if k>first then
