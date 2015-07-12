@@ -10,6 +10,24 @@ local bubble, popped
 local tilew, tileh
 local sheetw, sheeth
 local is_popped = {}
+local gdeaths = 0
+local deaths = 0
+
+local function count_pop()
+    deaths = deaths + 1
+    if networking then
+        local str = http.request(url)
+        local g = tonumber(str)
+        if g~=nil then
+            gdeaths = g
+            deaths = 0
+        else
+            console.log(str)
+            networking = false
+        end
+    end
+    console.log("bubbles popped: " .. (gdeaths + deaths))
+end
 
 local function bubble_get(x, y)
     if is_popped[x+y*sheetw] then
@@ -24,10 +42,7 @@ local function bubble_pop(x, y)
         love.audio.play("pop.wav", "stream")
         is_popped[x+y*sheetw] = true
     end
-    if networking then
-        local str = http.request(url)
-        console.log(str)
-    end
+    count_pop()
 end
 
 function love.load()
