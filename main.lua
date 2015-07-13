@@ -96,7 +96,7 @@ function love.mousereleased(x, y, b)
 end
 
 function love.keypressed(key)
-    if key == "escape" then
+    if key == "escape" or key=='q' then
         quit = true
     elseif key == "tab" then
         console.visible = not console.visible
