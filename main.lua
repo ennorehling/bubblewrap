@@ -1,6 +1,6 @@
 local http = require("socket.http")
-console = require('console')
-require('audiomgr')
+local console = require('console')
+local sound = require('sound')
 
 local networking = true
 local quit = false
@@ -39,7 +39,7 @@ end
 
 local function bubble_pop(x, y)
     if not is_popped[x+y*sheetw] then
-        love.audio.play("pop.wav", "stream")
+        love.audio.play("res/pop.wav", "stream")
         is_popped[x+y*sheetw] = true
     end
     count_pop()
@@ -48,7 +48,7 @@ end
 function love.load()
     love.window.setTitle("Bubbles (c) Enno Rehling 2015")
     console.log("Bubbles (c) Enno Rehling 2015")
-    img = love.graphics.newImage("bubbless.png")
+    img = love.graphics.newImage("res/bubbless.png")
     tilew, tileh = img:getDimensions()
     tilew = tilew/2
     tileh = tileh
