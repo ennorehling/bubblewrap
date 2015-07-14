@@ -1,11 +1,20 @@
 @ECHO OFF
 SET GAME=bubbles
-rd /s /q dist
-del /s /q %GAME%.zip
-"c:\Program Files\7-Zip\7z.exe" a %GAME%.zip conf.lua main.lua console.lua audiomgr.lua bubbles.png pop.wav
+
 mkdir dist
-copy /b "c:\Program Files\LOVE\love.exe"+%GAME%.zip dist\%GAME%.exe
-del %GAME%.zip
-copy "c:\Program Files\LOVE\*.dll" dist
-cd dist
-"c:\Program Files\7-Zip\7z.exe" a %GAME%.zip %GAME%.exe *.dll
+
+REM create game.love
+"c:\Program Files\7-Zip\7z.exe" a dist\%GAME%.love *.lua res\*.*
+
+PAUSE
+
+REM create windows exe
+mkdir build
+copy /b "c:\Program Files\LOVE\love.exe" + dist\%GAME%.love build\%GAME%.exe
+
+REM build windows zip
+"c:\Program Files\7-Zip\7z.exe" a dist\%GAME%.zip build\%GAME%.exe "c:\Program Files\LOVE\*.dll"
+
+rd /s /q build
+
+PAUSE
