@@ -1,6 +1,10 @@
 @ECHO OFF
 SET GAME=bubbles
 
+cd c:\users\enno\Documents\Love\%GAME%
+rd /s /q dist
+rd /s /q build
+
 mkdir dist
 
 REM create game.love
@@ -8,11 +12,15 @@ REM create game.love
 
 REM create windows exe
 mkdir build
-copy /b "c:\Program Files\LOVE\love.exe" + dist\%GAME%.love build\%GAME%.exe
+copy /b "c:\Program Files\LOVE\love.exe"+dist\%GAME%.love build\%GAME%.exe
+copy "c:\Program Files\LOVE\*.dll" build\
+copy "c:\Program Files\LOVE\license.txt" build\
 
 REM build windows zip
-"c:\Program Files\7-Zip\7z.exe" a dist\%GAME%.zip build\%GAME%.exe "c:\Program Files\LOVE\*.dll"
-rd /s /q build
+cd build
+"c:\Program Files\7-Zip\7z.exe" a ..\dist\%GAME%.zip %GAME%.exe *.dll
+cd ..
+REM rd /s /q build
 
 dir dist\*.*
 copy dist\*.* C:\Users\Enno\Dropbox\LOVE\
