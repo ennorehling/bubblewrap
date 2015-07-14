@@ -9,7 +9,7 @@ local hosts = {
   list = { 'enno.kn-bremen.de', '10.0.0.11' }
 }
 local img
-local bubble, popped
+local quads = {}
 local tilew, tileh
 local sheetw, sheeth
 local is_popped = {}
@@ -49,17 +49,14 @@ local function count_pop()
 end
 
 local function bubble_get(x, y)
-    if is_popped[x+y*sheetw] then
-        return false
-    else
-        return true
-    end
+    local i = is_popped[x+y*sheetw] or 4
+    return quads[i]
 end
 
 local function bubble_pop(x, y)
   if not is_popped[x+y*sheetw] then
     love.audio.play("res/pop.wav", "stream")
-    is_popped[x+y*sheetw] = true
+    is_popped[x+y*sheetw] = math.random(3)
     count_pop()
   end
 end
@@ -73,17 +70,19 @@ function love.load()
     console.log("Bubbles version 0.2")
     console.log("scale: " .. scale)
     if scale and scale>1.0 then
-      img = love.graphics.newImage("res/bubblesl.png")
+      img = love.graphics.newImage("res/bubbles_large.png")
     else
-      img = love.graphics.newImage("res/bubbless.png")
+      img = love.graphics.newImage("res/bubbles_small.png")
     end
     tilew, tileh = img:getDimensions()
     tilew = tilew/2
-    tileh = tileh
-    sheetw = 1+ w / tilew
+    tileh = tileh/2
+    sheetw = 2+ w / tilew
     sheeth = 1+ h / tileh
-    bubble = love.graphics.newQuad(0, 0, tilew, tileh, img:getDimensions())
-    popped = love.graphics.newQuad(tilew, 0, tilew, tileh, img:getDimensions())
+    quads[1] = love.graphics.newQuad(0, 0, tilew, tileh, img:getDimensions())
+    quads[2] = love.graphics.newQuad(0, tileh, tilew, tileh, img:getDimensions())
+    quads[3] = love.graphics.newQuad(tilew, 0, tilew, tileh, img:getDimensions())
+    quads[4] = love.graphics.newQuad(tilew, tileh, tilew, tileh, img:getDimensions())
     next_host()
     refresh_count(url_get)
 end
@@ -97,11 +96,7 @@ function love.draw()
         local x, y
         x = (i-1)*tilew
         y = (j-1)*tileh
-        if bubble_get(i, j) then
-            quad = bubble
-        else
-            quad = popped
-        end
+        quad = bubble_get(i, j)
         if j % 2 == 1 then
             x = x - tilew/2
         end
@@ -154,9 +149,9 @@ function love.mousepressed(x, y, b)
 end
 
 function love.keypressed(key)
-    if key == "escape" or key=='q' then
-        quit = true
-    elseif key == "tab" then
-        console.visible = not console.visible
-    end
+  if key == "escape" or key=='q' then
+    quit = true
+  elseif key == "tab" then
+    console.visible = not console.visible
+  end
 end

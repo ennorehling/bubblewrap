@@ -1,5 +1,5 @@
 @ECHO OFF
-SET GAME=bubbles
+SET GAME=bubblewrap
 
 cd c:\users\enno\Documents\Love\%GAME%
 rd /s /q dist
@@ -8,21 +8,20 @@ rd /s /q build
 mkdir dist
 
 REM create game.love
-"c:\Program Files\7-Zip\7z.exe" a dist\%GAME%.love *.lua res\*.*
-
+copy "c:\Program Files\LOVE\license.txt" .
+"c:\Program Files\7-Zip\7z.exe" a -tzip dist\%GAME%.love *.lua res license.txt
+pause
 REM create windows exe
 mkdir build
-copy /b "c:\Program Files\LOVE\love.exe"+dist\%GAME%.love build\%GAME%.exe
-copy "c:\Program Files\LOVE\*.dll" build\
-copy "c:\Program Files\LOVE\license.txt" build\
-
-REM build windows zip
 cd build
-"c:\Program Files\7-Zip\7z.exe" a ..\dist\%GAME%.zip %GAME%.exe *.dll
+copy "c:\Program Files\LOVE\love.exe" .
+copy ..\dist\%GAME%.love .
+copy /b love.exe+%GAME%.love %GAME%.exe
+copy "c:\Program Files\LOVE\*.dll" .
+"c:\Program Files\7-Zip\7z.exe" a -tzip ..\dist\%GAME%.zip %GAME%.exe *.dll
 cd ..
 REM rd /s /q build
 
-dir dist\*.*
 copy dist\*.* C:\Users\Enno\Dropbox\LOVE\
 
 PAUSE
